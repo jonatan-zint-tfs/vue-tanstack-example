@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { createColumnHelper } from '@tanstack/vue-table';
 import Table from './components/Table.vue';
-import { h, ref } from 'vue';
+import { computed, h, ref } from 'vue';
 import EditableCell from './components/EditableCell.vue';
 
 type Person = {
@@ -47,9 +47,10 @@ const columns = [
   columnHelper.group({
     header: 'Name',
     columns: [
-      columnHelper.accessor('firstName', {
+      columnHelper.accessor((row) => computed(() => row.firstName) , {
+        id: 'firstName',
         cell: info => h(EditableCell, {
-          modelValue: info.getValue(),
+          modelValue: info.getValue().value,
           'onUpdate:modelValue': (value) => {
             info.table.options.meta?.updateCellValue(info.row, info.cell, value)
           } 
