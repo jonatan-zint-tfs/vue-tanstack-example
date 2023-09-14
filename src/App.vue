@@ -100,10 +100,6 @@ const updateCell = ({rowIndex, cellName, value}: { rowIndex: number, cellName: k
     <h3>Tanstack Table</h3>
       <Table :data="data" :column-definitions="columns" @update:cell="updateCell" />
     </div>
-    <h3>Vue Table</h3>
-    <div class="vue-example">
-      
-    </div>
   </div>
 </template>
 
@@ -112,7 +108,5 @@ const updateCell = ({rowIndex, cellName, value}: { rowIndex: number, cellName: k
   width: 100%;
   height: 100%;
 }
-.wrapper > div {
-  width: 50%;
-}
+
 </style>

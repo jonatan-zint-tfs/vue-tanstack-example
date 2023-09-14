@@ -1,32 +1,45 @@
 <script setup lang="ts" generic="RowData extends Record<string, unknown>">
-import { Cell, ColumnDef, FlexRender, Row, getCoreRowModel, useVueTable } from '@tanstack/vue-table';
+import {
+  Cell,
+  ColumnDef,
+  FlexRender,
+  Row,
+  getCoreRowModel,
+  useVueTable,
+} from "@tanstack/vue-table";
 
-const props = defineProps<{ 
-  data: Array<RowData>,
-  columnDefinitions: Array<ColumnDef<RowData>>
-}>()
+const props = defineProps<{
+  data: Array<RowData>;
+  columnDefinitions: Array<ColumnDef<RowData>>;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:cell', value: { rowIndex: number, cellName: keyof RowData, value: unknown }): void
-}>()
+  (
+    e: "update:cell",
+    value: { rowIndex: number; cellName: keyof RowData; value: unknown },
+  ): void;
+}>();
 
 const table = useVueTable({
   get data() {
-    return props.data
+    return props.data;
   },
   columns: props.columnDefinitions,
   getCoreRowModel: getCoreRowModel(),
   meta: {
-    updateCellValue: (row: Row<RowData>, cell: Cell<RowData, unknown>, value: unknown) => {
-      emit('update:cell', {
+    updateCellValue: (
+      row: Row<RowData>,
+      cell: Cell<RowData, unknown>,
+      value: unknown,
+    ) => {
+      emit("update:cell", {
         rowIndex: row.index,
         cellName: cell.column.id,
-        value
-      })
-    }
-  }
-})
-
+        value,
+      });
+    },
+  },
+});
 </script>
 
 <template>
@@ -37,15 +50,18 @@ const table = useVueTable({
     </div>
     <div class="table-data">
       <p>Table data</p>
-      <pre>{{ JSON.stringify(table.getCoreRowModel().rows.map(({original}) => original), null, 4) }}</pre>
+      <pre>{{
+        JSON.stringify(
+          table.getCoreRowModel().rows.map(({ original }) => original),
+          null,
+          4,
+        )
+      }}</pre>
     </div>
   </div>
   <table>
     <thead>
-      <tr
-        v-for="headerGroup in table.getHeaderGroups()"
-        :key="headerGroup.id"
-      >
+      <tr v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
         <th
           v-for="header in headerGroup.headers"
           :key="header.id"
@@ -62,7 +78,7 @@ const table = useVueTable({
     <tbody>
       <tr v-for="row in table.getRowModel().rows" :key="row.id">
         <td v-for="cell in row.getVisibleCells()" :key="cell.id">
-          {{ cell.getValue() }}
+          CellValue: {{ cell.getValue() }} |
           <FlexRender
             :render="cell.column.columnDef.cell"
             :props="cell.getContext()"
@@ -71,10 +87,7 @@ const table = useVueTable({
       </tr>
     </tbody>
     <tfoot>
-      <tr
-        v-for="footerGroup in table.getFooterGroups()"
-        :key="footerGroup.id"
-      >
+      <tr v-for="footerGroup in table.getFooterGroups()" :key="footerGroup.id">
         <th
           v-for="header in footerGroup.headers"
           :key="header.id"
@@ -100,7 +113,7 @@ table {
   display: flex;
 }
 
-.data > div{
+.data > div {
   flex: 1;
 }
 </style>
