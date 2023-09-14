@@ -79,6 +79,8 @@ const table = useVueTable({
       <tr v-for="row in table.getRowModel().rows" :key="row.id">
         <td v-for="cell in row.getVisibleCells()" :key="cell.id">
           CellValue: {{ cell.getValue() }} |
+          <br />
+          OriginalValue: {{ cell.row.original[cell.column.id] }}
           <FlexRender
             :render="cell.column.columnDef.cell"
             :props="cell.getContext()"
